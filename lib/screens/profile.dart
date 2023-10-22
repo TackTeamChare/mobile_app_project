@@ -21,6 +21,8 @@ class _ProfileState extends State<Profile> {
   File? _imageFile;
   final _picker = ImagePicker();
   TextEditingController txtNameController = TextEditingController();
+  TextEditingController txtEmailController = TextEditingController();
+  TextEditingController txtPasswordController = TextEditingController();
 
   Future getImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -39,6 +41,8 @@ class _ProfileState extends State<Profile> {
         user = response.data as User;
         loading = false;
         txtNameController.text = user!.name ?? '';
+        txtEmailController.text = user!.email ?? '';
+        txtPasswordController.text = user!.password ?? '';
       });
     } else if (response.error == unauthorized) {
       logout().then((value) => {
@@ -86,6 +90,7 @@ class _ProfileState extends State<Profile> {
         ? Center(
             child: CircularProgressIndicator(),
           )
+          
         : Padding(
             padding: EdgeInsets.only(top: 40, left: 40, right: 40),
             child: ListView(
@@ -118,10 +123,32 @@ class _ProfileState extends State<Profile> {
                 Form(
                   key: formKey,
                   child: TextFormField(
-                    decoration: kInputDecoration('Name'),
+                    decoration: kInputDecoration('Name').copyWith(
+                      prefixIcon: Icon(Icons.person_2), // ไอคอนรหัสผ่าน
+                    ),
                     controller: txtNameController,
                     validator: (val) => val!.isEmpty ? 'Invalid Name' : null,
                   ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  decoration: kInputDecoration('Email').copyWith(
+                    prefixIcon: Icon(Icons.email), // ไอคอนรหัสผ่าน
+                  ),
+                  controller: txtEmailController,
+                  validator: (val) => val!.isEmpty ? 'Invalid Email' : null,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  decoration: kInputDecoration('Password').copyWith(
+                    prefixIcon: Icon(Icons.lock), // ไอคอนรหัสผ่าน
+                  ),
+                  controller: txtPasswordController,
+                  validator: (val) => val!.isEmpty ? 'Invalid Password' : null,
                 ),
                 SizedBox(
                   height: 20,
